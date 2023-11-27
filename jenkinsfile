@@ -16,17 +16,17 @@ pipeline {
                 }
             }
         }
-stage('push image to Hub'){
-steps{
-script
-     withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
-           sh 'docker login --username naseeb786 -p ${dockerhub}'
-            sh 'docker push naseeb786/task:1.0'
-}
+ stage('Push Image to Docker Hub') {
+            steps {
+                // Push the Docker image to Docker Hub
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                            dockerImage.push()
 
     }
 }
 }
 
  }
-}
+}}}
